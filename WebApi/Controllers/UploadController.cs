@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace WebApi.Controllers
@@ -26,13 +27,15 @@ namespace WebApi.Controllers
             // Login in Dropbox
             IDropbox dropbox = dropboxServiceProvider.GetApi(DropboxTokenValue, DropboxTokenSecret);
 
+            string root = HttpContext.Current.Server.MapPath("~/App_Data/Uploads");
+
             var file = this.Request.Content.ReadAsByteArrayAsync().Result;
 
-            File.WriteAllBytes("~/App_Data/Uploads/upload.jpg", file);
+            File.WriteAllBytes(root + "\\upload.jpg", file);
 
             // Upload a file
             Entry uploadFileEntry = dropbox.UploadFileAsync(
-                new FileResource("upload.jpg"),
+                new FileResource(root + "\\upload.jpg"),
                 "/" + Guid.NewGuid() + ".jpg").Result;
 
             // Share a file

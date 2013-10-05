@@ -300,7 +300,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="App_Data\Uploads\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
