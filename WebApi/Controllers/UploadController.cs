@@ -26,7 +26,7 @@ namespace WebApi.Controllers
             // Login in Dropbox
             IDropbox dropbox = dropboxServiceProvider.GetApi(DropboxTokenValue, DropboxTokenSecret);
 
-            File.WriteAllBytes("upload.jpg", fileByteArray);
+            File.WriteAllBytes("~/App_Data/Uploads/upload.jpg", fileByteArray);
 
             // Upload a file
             Entry uploadFileEntry = dropbox.UploadFileAsync(
