@@ -27,7 +27,9 @@ namespace WebApi.Controllers
             // Login in Dropbox
             IDropbox dropbox = dropboxServiceProvider.GetApi(DropboxTokenValue, DropboxTokenSecret);
 
-            string root = HttpContext.Current.Server.MapPath("~/App_Data/Uploads");
+
+
+            string root = Path.GetTempPath();
 
             var file = this.Request.Content.ReadAsByteArrayAsync().Result;
 
