@@ -18,7 +18,7 @@ namespace WebApi.Controllers
         private const string DropboxTokenValue = "d7ccyiqvo33byems";
         private const string DropboxTokenSecret = "bgdwet2c4q8em0f";
 
-        public string Post(byte[] fileByteArray)
+        public string Post()
         {
             DropboxServiceProvider dropboxServiceProvider =
                 new DropboxServiceProvider(DropboxAppKey, DropboxAppSecret, AccessLevel.AppFolder);
@@ -26,7 +26,9 @@ namespace WebApi.Controllers
             // Login in Dropbox
             IDropbox dropbox = dropboxServiceProvider.GetApi(DropboxTokenValue, DropboxTokenSecret);
 
-            File.WriteAllBytes("~/App_Data/Uploads/upload.jpg", fileByteArray);
+            var file = this.Request.Content.ReadAsByteArrayAsync().Result;
+
+            File.WriteAllBytes("~/App_Data/Uploads/upload.jpg", file);
 
             // Upload a file
             Entry uploadFileEntry = dropbox.UploadFileAsync(
