@@ -6,7 +6,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using WebApi.Helpers;
 using WebApi.Models;
 
 namespace WebApi.Controllers
@@ -106,7 +105,6 @@ namespace WebApi.Controllers
                 offer.Author = user;
                 offer.PublishDate = DateTime.Now;
                 db.Offers.Add(offer);
-                offer.PhotoUrl = Dropbox.Upload(Guid.NewGuid().ToString(), offer.PhotoUrl);
                 db.SaveChanges();
             }
         }

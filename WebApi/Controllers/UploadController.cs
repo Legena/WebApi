@@ -3,19 +3,22 @@ using Spring.Social.Dropbox.Api;
 using Spring.Social.Dropbox.Connect;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Web;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
 
-namespace WebApi.Helpers
+namespace WebApi.Controllers
 {
-    public class Dropbox
+    public class UploadController : ApiController
     {
         private const string DropboxAppKey = "5izqincotwfu3jv";
         private const string DropboxAppSecret = "xgj3csf09f1kr4f";
         private const string DropboxTokenValue = "d7ccyiqvo33byems";
         private const string DropboxTokenSecret = "bgdwet2c4q8em0f";
 
-        public static string Upload(string name, string file)
+        public string Post(byte[] fileByteArray)
         {
             DropboxServiceProvider dropboxServiceProvider =
                 new DropboxServiceProvider(DropboxAppKey, DropboxAppSecret, AccessLevel.AppFolder);
@@ -23,10 +26,12 @@ namespace WebApi.Helpers
             // Login in Dropbox
             IDropbox dropbox = dropboxServiceProvider.GetApi(DropboxTokenValue, DropboxTokenSecret);
 
+            File.WriteAllBytes("upload.jpg", fileByteArray);
+
             // Upload a file
             Entry uploadFileEntry = dropbox.UploadFileAsync(
-                new FileResource(file),
-                "/" + name + ".jpg").Result;
+                new FileResource("upload.jpg"),
+                "/" + Guid.NewGuid() + ".jpg").Result;
 
             // Share a file
             var sharedUrl = dropbox.GetMediaLinkAsync(uploadFileEntry.Path).Result;
