@@ -73,6 +73,7 @@ namespace WebApi.Controllers
         {
             using (db)
             {
+                var oldest = DateTime.Now.AddHours(-4);
                 var offers = from o in db.Offers
                              where o.Author.AccessToken == accessToken
                              select new OfferDto
@@ -92,8 +93,8 @@ namespace WebApi.Controllers
                                      LastName = o.Author.LastName,
                                      PhoneNumber = o.Author.PhoneNumber,
                                  }
-                             };
-                return offers.ToList();
+                             }; 
+                return offers.Where(o => o.PublishDate.CompareTo(oldest) > 0).ToList();
             }
         }
 
@@ -120,7 +121,8 @@ namespace WebApi.Controllers
                     {
                         offerToChange.Description = offer.Description;
                         offerToChange.Title = offer.Title;
-                        offerToChange.PhotoUrl = offer.PhotoUrl;
+                        offerToChange.Price = offer.Price;
+                        offerToChange.Town = offer.Town;
                     }
                 }
 
